@@ -5,7 +5,22 @@ cosas_y_atributos = {
     "Florencia": "bonita",
     "la ocurrencia": "osada",
     "la leña": "marrón",
-    "la nuez": "marrón"
+    "la nuez": "marrón",
+    "las nueces": "marrones",
+    "la pezuña": "sucia",
+    "las pezuñas": "sucias",
+    "La Coruña": "verde",
+    "el moscovio": "sintético",
+    "la música pop": "pegajosa",
+    "el disparo": "letal",
+    "las Nikes": "molonas",
+    "la máquina": "fría",
+    "la pagoda": "imponente",
+    "la arquitecta": "inteligente",
+    "el encuadre": "interesante",
+    "el Playmobil": "articulado",
+    "la corteza": "crujiente",
+    "Sánchez Dragó": "facha"
 }
 
 def busca_rima(frase):
@@ -41,7 +56,7 @@ def busca_cosa_atributo(frase):
 def estrofa(frase):
     try:
         cosa, atributo = busca_cosa_atributo(frase)
-        return "\nLas rosas son rojas\n" + atributo + " es " + cosa + "\n" + frase
+        return "\nLas rosas son rojas\n" + atributo + " " + cosa + "\n" + frase
     except:
         pass
 

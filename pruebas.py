@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import re
+import csv
 
 headers = {
     'Access-Control-Allow-Origin': '*',
@@ -36,27 +37,40 @@ def get_data(story):
 def read_page(url):
     """ Dada una url, devuelve una lista de diccionarios con todas las box stories de esa url.
     """
+    undesired_encodings = [
+        "iso-8859-2", "iso-8859-5",
+        "iso8859_10", "iso8859_11", "iso8859_13", "iso8859_14", "iso8859_16",
+        "windows-1252", "windows-1250",
+        "cp775", "cp850", "cp864", "cp932", "ptcp154",
+        "hp_roman8"
+        ]
+
     req = requests.get(url, headers)
-    soup = BeautifulSoup(req.content, 'html.parser', exclude_encodings=["iso8859_10", "windows-1252", "cp850"])
-    print(soup.original_encoding)
+    soup = BeautifulSoup(req.content, 'html.parser', exclude_encodings=undesired_encodings)
+    
+    if soup.original_encoding != "utf-8":
+        print(soup.original_encoding)
 
     stories = [get_data(story) for story in soup.find_all("div", class_="box story")]
 
-    return stories[0]
+    return stories
 
 def save_data(inicio, fin):
     url_base="https://www.ascodevida.com/ultimos/p/"
 
-    all = []
     for i in range(inicio, fin):
+        print(i)
         url = url_base + str(i)
         advs = read_page(url)
-        all.append(advs)
 
-    with open("data/pagina.txt", "w", encoding="utf-8") as f:
-        f.write(str(all))
+        with open("data/pagina.csv", "a", newline='', encoding="utf-8") as f:
+            fieldnames = ['comments_num', 'meta', 'text', 'link', 'queadv', 'merecido', 'chorrada']
+            writer = csv.DictWriter(f, fieldnames=fieldnames)
+            for adv in advs:
+                writer.writerow(adv)
 
-save_data(1, 2)
+save_data(1, 1000)
 # Hay 8580
 
-# character_set = [^A-ZÁÉÍÓÚáéíóúñüa-z0-9 ,.:'"{}()\[\]\\\/¿?¡!_-€@]
+# character_set = [^A-ZÁÉÍÓÚÀÈÌÒÙÑÜÇa-záéíóúàèìòùñüç0-9 ,.:;·'’´"“”«»<>{}()\[\]\\\/¿?¡!_|\-€$£&%@#♂♀ºª°*+=…¬]
+# regex fecha = \d+ \w{3} \d{4}, \d\d:\d\d
