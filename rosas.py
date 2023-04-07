@@ -1,40 +1,59 @@
 from pyverse import Pyverse
 import random
+import re
 
-cosas_y_atributos = {
-    "Florencia": "bonita",
-    "la ocurrencia": "osada",
-    "la leña": "marrón",
-    "la nuez": "marrón",
-    "las nueces": "marrones",
-    "la pezuña": "sucia",
-    "las pezuñas": "sucias",
-    "La Coruña": "verde",
-    "el moscovio": "sintético",
-    "la música pop": "pegajosa",
-    "el disparo": "letal",
-    "las Nikes": "molonas",
-    "la máquina": "fría",
-    "la pagoda": "imponente",
-    "la arquitecta": "inteligente",
-    "el encuadre": "interesante",
-    "el Playmobil": "articulado",
-    "la corteza": "crujiente",
-    "Sánchez Dragó": "facha"
-}
+with open("versos_sueltos.txt", "r", encoding="utf-8") as v:
+    cosas_y_atributos = eval(v.read())
+
+# Carmen Mola son tres
+# tres son Carmen Mola
 
 def busca_rima(frase):
     frase_en_lista = frase.split()
     ultima_palabra = frase_en_lista[-1]
-    try:
-        verse = Pyverse(ultima_palabra)
-        rima = verse.consonant_rhyme
+
+    # buscar la rima de un monosílabo
+    monosílabo = re.match("^([b-df-hj-np-tv-zn]{0,2})([aeiouáéíóú])([b-df-hj-np-tv-zn]{0,2})$", ultima_palabra)
+    if monosílabo:
+        if "a" in ultima_palabra:
+            vocal_acentuada = "á"
+        elif "e" in ultima_palabra:
+            vocal_acentuada = "é"
+        elif "i" in ultima_palabra:
+            vocal_acentuada = "í"
+        elif "o" in ultima_palabra:
+            vocal_acentuada = "ó"
+        elif "u" in ultima_palabra:
+            vocal_acentuada = "ú"
+        rima = vocal_acentuada + monosílabo.group(3)
         return rima
-    except:
-        print("error en " + ultima_palabra)
+
+    # buscar la rima de una palabra con tilde
+    palabra_con_tilde = "(.*?)([áéíóúÁÉÍÓÚ])(.*)"
+    lleva_tilde = re.match(palabra_con_tilde, ultima_palabra)
+    if lleva_tilde: # tildes
+        rima = lleva_tilde.group(2) + lleva_tilde.group(3)
+        return rima
+    else:
+        try:
+            verse = Pyverse(ultima_palabra)
+            rima = verse.consonant_rhyme
+            return rima
+        except:
+            print("error en " + ultima_palabra)
+
+def enriquecer_bv(rima):
+    if "b" in rima:
+        return (rima, re.sub("b", "v", rima), re.sub("b", "bv", rima))
+    elif "v" in rima:
+        return (rima, re.sub("v", "b", rima), re.sub("v", "bv", rima))
+    else:
+        return rima
 
 def busca_cosa_atributo(frase):
     rima = busca_rima(frase)
+    rima = enriquecer_bv(rima)
+
     print("Tiene que rimar con", rima) # Así vemos si Pyverse ha visto bien la rima
     cosas_candidatas = []
     for cosa in cosas_y_atributos:
