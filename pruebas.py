@@ -39,10 +39,10 @@ def read_page(url):
     """
     undesired_encodings = [
         "iso-8859-2", "iso-8859-5",
-        "iso8859_10", "iso8859_11", "iso8859_13", "iso8859_14", "iso8859_16",
+        "iso8859_4", "iso8859_9", "iso8859_10", "iso8859_11", "iso8859_13", "iso8859_14", "iso8859_15", "iso8859_16",
         "windows-1252", "windows-1250",
-        "cp775", "cp850", "cp864", "cp932", "ptcp154",
-        "hp_roman8"
+        "cp775", "cp850", "cp852", "cp864", "cp932", "ptcp154", "cp1125",
+        "hp_roman8", "mac_iceland", "koi8-r", "mac_latin2"
         ]
 
     req = requests.get(url, headers)
@@ -59,7 +59,7 @@ def save_data(inicio, fin):
     url_base="https://www.ascodevida.com/ultimos/p/"
 
     for i in range(inicio, fin):
-        print(i)
+        #print(i)
         url = url_base + str(i)
         advs = read_page(url)
 
@@ -69,8 +69,8 @@ def save_data(inicio, fin):
             for adv in advs:
                 writer.writerow(adv)
 
-save_data(1, 1000)
-# Hay 8580
+save_data(8000, 8591) # descargado el 6 de abril de 2023
+# Hay 8590
 
-# character_set = [^A-ZÁÉÍÓÚÀÈÌÒÙÑÜÇa-záéíóúàèìòùñüç0-9 ,.:;·'’´"“”«»<>{}()\[\]\\\/¿?¡!_|\-€$£&%@#♂♀ºª°*+=…¬]
+# character_set = [^A-ZÁÉÍÓÚÀÈÌÒÙÑÜÇa-záéíóúàèìòùñüç0-9 ,.:;·'‘’´"“”«»<>{}()\[\]\\\/¿?¡!_|\-–€$£&%@#♂♀ºª°²*+=…¬~]
 # regex fecha = \d+ \w{3} \d{4}, \d\d:\d\d
