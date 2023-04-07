@@ -11,7 +11,7 @@ for adv in advs:
 
 with open("data/terminaciones.txt", "a", encoding="utf-8") as f:
     for corto in cortos:
-        corto = re.sub("\.\s?ADV", "", corto)
+        corto = re.sub("\s*ADV$", "", corto)
         corto = corto.split()
         rima = corto[-2:]
         f.write(" ".join(rima) + "\n")
