@@ -177,6 +177,7 @@
 	"ladrador": "el perro",
 	"ladradores": "los perros",
 	"la foto": "de Segovia",
+	"de Segovia": "la foto",
 	"brillante": "el bismuto",
 	"el bismuto": "brillante",
 	"los zorros": "astutos",

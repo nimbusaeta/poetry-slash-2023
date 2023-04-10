@@ -13,7 +13,8 @@ def busca_rima(frase):
     ultima_palabra = frase_en_lista[-1]
 
     # buscar la rima de un monosílabo
-    monosílabo = re.match("^([b-df-hj-np-tv-zn]{0,2})([aeiouáéíóú])([b-df-hj-np-tv-zn]{0,2})$", ultima_palabra)
+    # TODO: fui (rima con -í), que, quién, estoy, soy
+    monosílabo = re.match("^([b-df-hj-np-tv-zñ]{0,2})([aeiouáéíóú])([b-df-hj-np-tv-xzñ]{0,2})$", ultima_palabra)
     if monosílabo:
         if "a" in ultima_palabra:
             vocal_acentuada = "á"
@@ -43,6 +44,7 @@ def busca_rima(frase):
             print("error en " + ultima_palabra)
 
 def enriquecer_bv(rima):
+    # TODO: "obvio" en el ADV
     if "b" in rima:
         return (rima, re.sub("b", "v", rima), re.sub("b", "bv", rima))
     elif "v" in rima:
@@ -53,6 +55,7 @@ def enriquecer_bv(rima):
 def busca_cosa_atributo(frase):
     rima = busca_rima(frase)
     rima = enriquecer_bv(rima)
+    # TODO: enriquecer_chtx
 
     print("Tiene que rimar con", rima) # Así vemos si Pyverse ha visto bien la rima
     cosas_candidatas = []
@@ -62,6 +65,8 @@ def busca_cosa_atributo(frase):
     
     if len(cosas_candidatas) == 0: # No hay rima
         print("No se me ocurre una palabra que rime y que tenga un atributo con el que pueda hacer el poema.")
+        # TODO: listas de adjetivos y de sustantivos y que las combine: pillar de DiaDeTodosLosCorpus
+        # TODO: rima asonante
     elif len(cosas_candidatas) == 1: # Solo hay una palabra que rime en el diccionario
         cosa_elegida = cosas_candidatas[0]
         atributo = cosas_y_atributos[cosa_elegida]
@@ -84,4 +89,3 @@ def main():
     poema = estrofa(frase)
     print(poema)
 
-main()
