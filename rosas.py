@@ -45,18 +45,27 @@ def busca_rima(frase):
             print("error en " + ultima_palabra)
 
 def enriquecer_bv(rima):
-    # TODO: "obvio" en el ADV
-    if "b" in rima:
+    if "bv" in rima:
+        return (rima, re.sub("bv", "v", rima), re.sub("bv", "b", rima))
+    elif "b" in rima:
         return (rima, re.sub("b", "v", rima), re.sub("b", "bv", rima))
     elif "v" in rima:
         return (rima, re.sub("v", "b", rima), re.sub("v", "bv", rima))
     else:
         return rima
 
+def enriquecer_chtx(rima):
+    if "ch" in rima:
+        return (rima, re.sub("ch", "tx", rima))
+    elif "tx" in rima:
+        return (rima, re.sub("tx", "ch", rima))
+    else:
+        return rima
+
 def busca_cosa_atributo(frase):
     rima = busca_rima(frase)
     rima = enriquecer_bv(rima)
-    # TODO: enriquecer_chtx
+    rima = enriquecer_chtx(rima)
 
     print("Tiene que rimar con", rima) # Así vemos si Pyverse ha visto bien la rima
     cosas_candidatas = []
@@ -91,3 +100,4 @@ def main():
     poema = estrofa(frase)
     print(poema)
 
+main()

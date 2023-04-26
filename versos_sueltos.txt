@@ -504,6 +504,8 @@
 	"verde": "La Coruña",
 	"el moscovio": "sintético",
 	"sintético": "el moscovio",
+	"el microbio": "diminuto",
+	"diminuto": "el microbio",
 	"la música pop": "pegajosa",
 	"pegajosa": "la música pop",
 	"el disparo": "letal",
