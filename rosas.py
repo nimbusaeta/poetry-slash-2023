@@ -1,9 +1,10 @@
 from pyverse import Pyverse
 import random
 import re
+import json
 
 with open("versos_sueltos.txt", "r", encoding="utf-8") as v:
-    cosas_y_atributos = eval(v.read())
+    cosas_y_atributos = json.load(v)
 
 # Carmen Mola son tres
 # tres son Carmen Mola
@@ -72,6 +73,7 @@ def busca_cosa_atributo(frase):
         atributo = cosas_y_atributos[cosa_elegida]
         return cosa_elegida, atributo
     else: # Hay varias palabras que riman en el diccionario, así que escoge una al azar
+        # TODO: si alguna coincide con la última palabra de "frase", que la excluya de las candidatas
         index_al_azar = random.randint(0, len(cosas_candidatas)-1)
         cosa_elegida = cosas_candidatas[index_al_azar]
         atributo = cosas_y_atributos[cosa_elegida]
