@@ -60,6 +60,7 @@ def busca_rima(frase):
         return rima
 
     # buscar la rima de una palabra con tilde
+    # TODO: suéter - tinder, océano - mano, fértil - vaginesil, dramático - chico
     palabra_con_tilde = "(.*?)([áéíóúÁÉÍÓÚ])(.*)"
     lleva_tilde = re.match(palabra_con_tilde, ultima_palabra)
     if lleva_tilde: # tildes
