@@ -6,7 +6,7 @@ import json
 with open("versos_sueltos.txt", "r", encoding="utf-8") as v:
     cosas_y_atributos = json.load(v)
 
-# Carmen Mola son tres
+# TODO: Carmen Mola son tres
 # tres son Carmen Mola
 
 def busca_rima(frase):
@@ -93,10 +93,12 @@ def enriquecer_chtx(rima):
 
 def busca_cosa_atributo(frase):
     rima = busca_rima(frase)
+
+    # ampliaciones
     rima = enriquecer_bv(rima)
     rima = enriquecer_chtx(rima)
 
-    print("Tiene que rimar con", rima) # Así vemos si Pyverse ha visto bien la rima
+    print("Tiene que rimar con", rima) # Así vemos si Pyverse ha visto bien la rima # TODO: cuando haya varias, que lo formatee bien
     cosas_candidatas = []
     for cosa in cosas_y_atributos:
         if cosa.endswith(rima):
