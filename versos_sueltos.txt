@@ -532,5 +532,9 @@
 	"la corteza": "crujiente",
 	"crujiente": "la corteza",
 	"Sánchez Dragó": "facha",
-	"facha": "Sánchez Dragó"
+	"facha": "Sánchez Dragó",
+	"un regalo": "el hoy",
+	"el hoy": "un regalo",
+	"ágil": "la salamandra",
+	"la salamandra": "ágil"
 }

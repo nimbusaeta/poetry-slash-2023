@@ -13,9 +13,38 @@ def busca_rima(frase):
     frase_en_lista = frase.split()
     ultima_palabra = frase_en_lista[-1]
 
+    # casos especiales
+    Reagan = re.match("Reagan", ultima_palabra)
+    if Reagan:
+        rima = "igan"
+        return rima
+
+    # buscar la rima de una palabra acabada en vocal e -y
+    termina_en_vocal_e_y = re.match("(.*?)([aeiouáéíóúAEIOUÁÉÍÓÚ])([yY])$", ultima_palabra)
+    if termina_en_vocal_e_y:
+        rima = (termina_en_vocal_e_y.group(2) + "y", termina_en_vocal_e_y.group(2) + "i")
+        return rima
+
+    # buscar la rima de un monosílabo con diptongo
+    # TODO: que tmb busque la rima en palabras polisílabas
+    monosílabo_dip = re.match("^([b-df-hj-np-tv-zñB-DF-HJ-NP-TV-ZÑ]{0,2})([aeiouáéíóúAEIOUÁÉÍÓÚ])([aeiouáéíóúAEIOUÁÉÍÓÚ])([b-df-hj-np-tv-zñB-DF-HJ-NP-TV-ZÑ]{0,2})$", ultima_palabra)
+    if monosílabo_dip:
+        if "a" in ultima_palabra:
+            vocal_acentuada = "á"
+        elif "e" in ultima_palabra:
+            vocal_acentuada = "é"
+        elif "i" in ultima_palabra:
+            vocal_acentuada = "í"
+        elif "o" in ultima_palabra:
+            vocal_acentuada = "ó"
+        elif "u" in ultima_palabra:
+            vocal_acentuada = "ú"
+        rima = vocal_acentuada + monosílabo_dip.group(4)
+        return rima
+
     # buscar la rima de un monosílabo
-    # TODO: fui (rima con -í), que, quién, estoy, soy
-    monosílabo = re.match("^([b-df-hj-np-tv-zñ]{0,2})([aeiouáéíóú])([b-df-hj-np-tv-xzñ]{0,2})$", ultima_palabra)
+    # TODO: que tmb busque la rima en palabras polisílabas
+    monosílabo = re.match("^([b-df-hj-np-tv-zñB-DF-HJ-NP-TV-ZÑ]{0,2})([aeiouáéíóúAEIOUÁÉÍÓÚ])([b-df-hj-np-tv-zñB-DF-HJ-NP-TV-ZÑ]{0,2})$", ultima_palabra)
     if monosílabo:
         if "a" in ultima_palabra:
             vocal_acentuada = "á"
@@ -72,7 +101,7 @@ def busca_cosa_atributo(frase):
     for cosa in cosas_y_atributos:
         if cosa.endswith(rima):
             cosas_candidatas.append(cosa)
-    
+
     if len(cosas_candidatas) == 0: # No hay rima
         print("No se me ocurre una palabra que rime y que tenga un atributo con el que pueda hacer el poema.")
         # TODO: listas de adjetivos y de sustantivos y que las combine: pillar de DiaDeTodosLosCorpus
@@ -82,7 +111,15 @@ def busca_cosa_atributo(frase):
         atributo = cosas_y_atributos[cosa_elegida]
         return cosa_elegida, atributo
     else: # Hay varias palabras que riman en el diccionario, así que escoge una al azar
-        # TODO: si alguna coincide con la última palabra de "frase", que la excluya de las candidatas
+        # si la última palabra de la cosa que encuentra coincide con la última palabra de frase, excluye la cosa de las candidatas
+        frase_en_lista = frase.split()
+        ultima_palabra = frase_en_lista[-1]
+        for cosa_candidata in cosas_candidatas:
+            cosa_candidata_en_lista =  cosa_candidata.split()
+            ultima_palabra_cosa_candidata = cosa_candidata_en_lista[-1]
+            if ultima_palabra == ultima_palabra_cosa_candidata:
+                cosas_candidatas.remove(cosa_candidata)
+
         index_al_azar = random.randint(0, len(cosas_candidatas)-1)
         cosa_elegida = cosas_candidatas[index_al_azar]
         atributo = cosas_y_atributos[cosa_elegida]
